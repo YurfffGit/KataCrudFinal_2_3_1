@@ -23,12 +23,6 @@ public class UserDaoImpl implements UserDao {
     public void changeUser() {
 
     }
-
-    @Override
-    public List<User> index() {
-        return users;
-    }
-
     @Override
     public Optional<User> getUserById(Long id) {
         return Optional.empty();
@@ -47,5 +41,10 @@ public class UserDaoImpl implements UserDao {
         users.add(new User(1, "Sergey"));
         users.add(new User(2, "Ivan"));
         users.add(new User(3, "Nikolai"));
+    }
+
+    @Override
+    public List<User> index() {
+        return users;
     }
 }
