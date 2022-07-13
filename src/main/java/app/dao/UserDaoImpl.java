@@ -33,18 +33,34 @@ public class UserDaoImpl implements UserDao {
         return users.stream().filter(user -> user.getId() == id).findAny().orElse(null);
     }
 
+    private static int count;
+
     private List<User> users;
 
     {
         users = new ArrayList<>();
 
-        users.add(new User(1, "Sergey"));
-        users.add(new User(2, "Ivan"));
-        users.add(new User(3, "Nikolai"));
+        users.add(new User(++count, "Сергей"));
+        users.add(new User(++count, "Ivan"));
+        users.add(new User(++count, "Nikolai"));
     }
 
     @Override
     public List<User> index() {
         return users;
+    }
+
+    public void save(User user) {
+        user.setId(++count);
+        users.add(user);
+    }
+
+    public void update(long id, User user) {
+        User toUpdate = show(id);
+        toUpdate.setName(user.getName());
+    }
+
+    public void delete(long id) {
+        users.removeIf(u -> u.getId() == id);
     }
 }

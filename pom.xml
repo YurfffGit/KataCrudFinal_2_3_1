@@ -15,7 +15,7 @@
         <maven.compiler.target>17</maven.compiler.target>
 
         <junit.version>4.13.2</junit.version>
-        <spring-webmvc.version>5.3.21</spring-webmvc.version>
+        <spring-webmvc.version>5.3.20</spring-webmvc.version>
         <thymeleaf.version>3.0.15.RELEASE</thymeleaf.version>
         <hibernate-core.version>5.6.9.Final</hibernate-core.version>
         <mysql-connector-java.version>8.0.29</mysql-connector-java.version>
@@ -41,6 +41,11 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${spring-webmvc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>5.3.21</version>
         </dependency>
         <!--     https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf -->
         <dependency>
@@ -113,5 +118,34 @@
 
 
     </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>2.4</version>
+                    <configuration>
+                        <warSourceDirectory>src/webapp</warSourceDirectory>
+                        <warName>spring_mvc</warName>
+                        <failOnMissingWebXml>false</failOnMissingWebXml>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                </configuration>
+            </plugin>
+        </plugins>
+        <finalName>Spring_MVC</finalName>
+    </build>
 
 </project>
