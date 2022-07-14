@@ -5,13 +5,9 @@ import app.model.User;
 import java.util.*;
 
 public interface UserDao {
-    void saveUser(User u);
-
-    void removeUser(long id);
-
-    void changeUser();
-
-    List<User> index();
-
-    Optional<User> getUserById(Long id);
+    List<User>getAllUsers ();
+    User getUserById(int id);
+    void addUser(User user);
+    void removeUser(int id);
+    void updateUser(User user);
 }

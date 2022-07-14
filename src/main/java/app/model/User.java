@@ -17,10 +17,17 @@ public class User {
     @ToString.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     @ToString.Include
     @Column(name = "name")
     private String name;
 
+    @ToString.Include
+    @Column(name = "surname")
+    private String surname;
+
+    @ToString.Include
+    @Column(name = "age")
+    private int age;
 }

@@ -1,66 +1,40 @@
 package app.dao;
 
 import app.model.User;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.Optional;
 
-@Component
+@Repository
 public class UserDaoImpl implements UserDao {
-    @Override
-    public void saveUser(User u) {
 
-    }
-
-    @Override
-    public void removeUser(long id) {
-
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
-    public void changeUser() {
-
-    }
-    @Override
-    public Optional<User> getUserById(Long id) {
-        return Optional.empty();
-    }
-
-    // Удалить после перехода от списка к ДБ
-    public User show(long id) {
-        return users.stream().filter(user -> user.getId() == id).findAny().orElse(null);
-    }
-
-    private static int count;
-
-    private List<User> users;
-
-    {
-        users = new ArrayList<>();
-
-        users.add(new User(++count, "Сергей"));
-        users.add(new User(++count, "Ivan"));
-        users.add(new User(++count, "Nikolai"));
+    public List<User> getAllUsers() {
+        return entityManager.createQuery("SELECT u from User u", User.class).getResultList();
     }
 
     @Override
-    public List<User> index() {
-        return users;
+    public User getUserById(int id) {
+        return entityManager.find(User.class, id);
     }
 
-    public void save(User user) {
-        user.setId(++count);
-        users.add(user);
+    @Override
+    public void addUser(User user) {
+        entityManager.persist(user);
     }
 
-    public void update(long id, User user) {
-        User toUpdate = show(id);
-        toUpdate.setName(user.getName());
+    @Override
+    public void removeUser(int id) {
+        entityManager.remove(getUserById(id));
     }
 
-    public void delete(long id) {
-        users.removeIf(u -> u.getId() == id);
+    @Override
+    public void updateUser(User user) {
+        entityManager.merge(user);
     }
 }

@@ -1,36 +1,17 @@
 package app.service;
 
 import app.model.User;
-import app.repo.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
-@Transactional
-public class UserService {
-    private final UserRepository userRepo;
+public interface UserService {
+    List<User> getAllUsers();
 
-    public UserService(UserRepository userRepo) {
-        this.userRepo = userRepo;
-    }
+    User getUserById(int id);
 
-    public void save(User user) {
-        userRepo.save(user);
-    }
+    void addUser(User user);
 
-    public List<User> listAll() {
-        return (List<User>) userRepo.findAll();
-    }
+    void removeUser(int id);
 
-    public User get(Long id) {
-        return userRepo.findById(id).get();
-    }
-
-    public void delete(Long id) {
-        userRepo.deleteById(id);
-    }
+    void updateUser(User user);
 }

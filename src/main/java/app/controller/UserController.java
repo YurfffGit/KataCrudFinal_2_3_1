@@ -1,10 +1,8 @@
 package app.controller;
 
 
-import app.dao.UserDaoImpl;
 import app.model.User;
 import app.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,32 +13,14 @@ public class UserController {
 
     private final UserService userService;
 
-    private final UserDaoImpl userDao;
-
-    @Autowired
-    public UserController(UserDaoImpl userDao, UserService userService) {
-        this.userDao = userDao;
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping()
-    public String index(Model model) {
-        //Получить всех людей из ДБ и передать на отображение
-        model.addAttribute("users", userDao.index());
-        return "users/index";
-    }
-
-    @RequestMapping("/test1")
-    public String home(Model model) {
-        model.addAttribute("users", userService.listAll());
-        return "users/startPage";
-    }
-
-    @GetMapping("/{id}")
-    public String show(@PathVariable("id") long id, Model model) {
-        // Получение человека по ид из ДБ и передача на отображение
-        model.addAttribute("user", userDao.show(id));
-        return "users/show";
+    @GetMapping
+    public String getAllUsers(Model model) {
+        model.addAttribute("users", userService.getAllUsers());
+        return "users/users";
     }
 
     @GetMapping("/new")
@@ -48,27 +28,27 @@ public class UserController {
         return "users/new";
     }
 
-    @PostMapping
+    @PostMapping()
     public String create(@ModelAttribute("user") User user) {
-        userDao.save(user);
+        userService.addUser(user);
         return "redirect:/users";
     }
 
-    @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable("id") long id){
-        model.addAttribute("user", userDao.show(id));
+    @DeleteMapping(value = "/delete/{id}")
+    public String deleteUserFrom(@PathVariable("id") int id) {
+        userService.removeUser(id);
+        return "redirect:/users";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String updateUserForm(Model model, @PathVariable("id") int id) {
+        model.addAttribute("user", userService.getUserById(id));
         return "users/edit";
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("user") User user, @PathVariable("id") long id){
-        userDao.update(id, user);
-        return "redirect:/users";
-    }
-
-    @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") long id) {
-        userDao.delete(id);
+    public String updateUserFrom(@ModelAttribute("user") User user, @PathVariable("id") int id) {
+        userService.updateUser(user);
         return "redirect:/users";
     }
 }
